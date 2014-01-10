@@ -51,6 +51,7 @@ function love.keyreleased(key)
 	end
 	if (key == "x") then
 		table.insert(attacks, p:attack())
+		p:stop()
 	end
 	if key == "escape" then
       love.event.quit()
@@ -64,9 +65,10 @@ function love.draw()
 	g.print("Player State: "..p.state, 5, 20)
 	g.print("speed "..p.xSpeed..", "..p.ySpeed)
 	g.print("cooldown"..p.cooldown, 100, 0)
+	
+	--draw the attack hitbox (debug only)
 	g.setColor(255,255,255,255)
 	for i,v in ipairs(attacks) do
-
-		g.rectangle("fill", v.x, v.y, 2, 2)
+		g.rectangle("fill", v.x, v.y, v.width, v.height)
 	end
 end
