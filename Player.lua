@@ -1,5 +1,11 @@
 Player = {}
+--[[ The Player Class
 
+this contains all the things a player needs
+Right now there is only one, 
+but eventually there will be one for each player in multiplayer games.
+Probably.
+--]]
 
 --Constructor
 function Player:new()
