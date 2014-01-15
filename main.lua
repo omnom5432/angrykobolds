@@ -60,7 +60,11 @@ function love.update(dt)
 		for ii,vv in ipairs(enemies) do
 			if (CheckCollision(v.x, v.y, v.width, v.height, vv.x, vv.y, vv.width, vv.height)) then
 				table.remove(attacks, i)
-				table.remove(enemies, ii)
+				vv.health = vv.health - 1
+				vv.mood = "Scared"
+				if (vv.health < 0) then
+					table.remove(enemies, ii)
+				end
 			end
 		end
 
@@ -68,6 +72,7 @@ function love.update(dt)
 	--each enemy thinks
 	for i,v in ipairs(enemies) do
 		v:think(p.x, p.y)
+		v:update(dt)
 	end
 end
 
@@ -89,12 +94,13 @@ function love.draw()
 	g.setColor(playerColor)
 	g.rectangle("fill", p.x, p.y, p.width, p.height)
 	g.print("Player State: "..p.state, 5, 20)
-	g.print("speed "..p.xSpeed..", "..p.ySpeed)
+	g.print("speed "..math.floor(p.xSpeed)..", "..math.floor(p.ySpeed))
 	g.print("cooldown"..p.cooldown, 100, 0)
 	
 	g.setColor(enemyColor)
 	for i,v in ipairs(enemies) do
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
+		g.print("State:"..v.dir..v.mood, v.x, v.y-10)
 	end
 		--draw the attack hitbox (debug only)
 	g.setColor(255,255,255,255)

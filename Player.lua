@@ -69,9 +69,20 @@ function Player:update(dt)
 	if (self.cooldown > 0) then 
 		self.cooldown = self.cooldown - 1
 	end
-
+	--limits speed on the diagonals
+	--this formula was calculated using SUPER MATH and keeps the speed as equal as possible.
+	if (self.xSpeed ~= 0) and (self.ySpeed ~= 0) then
+		self.xSpeed = math.sqrt(self.speed * self.speed / 2) * (self.xSpeed / math.abs(self.xSpeed))
+		self.ySpeed = math.sqrt(self.speed * self.speed / 2) * (self.ySpeed / math.abs(self.ySpeed))
+	end
 	self.x = self.x + (self.xSpeed * dt)
 	self.y = self.y + (self.ySpeed * dt)
+	if (self.x < 0) then
+		self.x = 0
+	end
+	if (self.y < 0) then
+		self.y = 0
+	end
 
 end
 
