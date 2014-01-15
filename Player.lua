@@ -30,6 +30,7 @@ end
 --Controls
 
 --Movement
+--need to add logic to check for diagonal movement, currently the player moves faster along diagonals.
 function Player:moveUp()
 if (self.cooldown < 5) then
 	self.ySpeed = -(self.speed)
@@ -87,7 +88,7 @@ attack.width = self.width/2
 attack.height = self.height/2
 if (self.cooldown < 1) then
 	--prevents an attack from happening if the player has just attacked
-	self.cooldown = 50
+	self.cooldown = 25
 	attack.dir = self.state
 	attack.range = self.atkRange
 	attack.length = self.cooldown
