@@ -26,6 +26,7 @@ function Enemy:new()
 		cooldown = 0,
 		atkRange = 0,
 		sightRange = 0,
+		changeDir = 0,
 }
 	setmetatable(object, {__index = Enemy})
 	return object
@@ -36,11 +37,28 @@ end
 function Enemy:think(playerx, playery)
 	--rev up those pythagorean theorems
 	distance = math.sqrt((self.x - playerx)^2 + (self.y - playery)^2)
-	if (distance <= self.sightRange) then
+	if (self.mood == "Happy") then
+		--do whatever it is that badguys do
+		if (self.changeDir < 1) then
+			self.changeDir = math.random(200)
+			direction = math.random(6)
+			if (direction <= 2) then
+				self:moveRight()
+			elseif (direction <= 3) then
+				self:moveUp()
+			elseif (direction <= 4) then
+				self:moveLeft()
+			elseif(direction <= 5) then
+				self:moveDown()
+			else
+				self:stop()
+			end
+		end
+		self.changeDir = self.changeDir - 1
+	elseif (distance <= self.sightRange) then
 		--act based on mood
-		if (self.mood == "Happy") then
 
-		elseif (self.mood == "Scared") then
+		if (self.mood == "Scared") then
 			--run away from player
 			if (playerx < self.x) then 
 				self:moveRight() 
@@ -56,7 +74,7 @@ function Enemy:think(playerx, playery)
 
 		elseif (self.mood == "Angry") then
 			--move towards player menacingly
-			if (playerx < self.x) then 
+			if (playerx > self.x) then 
 				self:moveRight()
 			else
 				self:moveLeft()
