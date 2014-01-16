@@ -85,8 +85,8 @@ function love.keyreleased(key)
 		p:stop()
 	end
 	if key == "escape" then
-      love.event.quit()
-   end
+		love.event.quit()
+	end
 end
 
 function love.draw()
@@ -100,7 +100,7 @@ function love.draw()
 	g.setColor(enemyColor)
 	for i,v in ipairs(enemies) do
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
-		g.print("State:"..v.dir..v.mood, v.x, v.y-10)
+		g.print(v.dir..v.mood, v.x, v.y-15)
 	end
 		--draw the attack hitbox (debug only)
 	g.setColor(255,255,255,255)
@@ -114,8 +114,8 @@ end
 -- x1,y1 are the left-top coords of the first box, while w1,h1 are its width and height
 -- x2,y2,w2 & h2 are the same, but for the second box
 function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
-  return x1 < x2+w2 and
-         x2 < x1+w1 and
-         y1 < y2+h2 and
-         y2 < y1+h1
+	return x1 < x2+w2 and
+		x2 < x1+w1 and
+		y1 < y2+h2 and
+		y2 < y1+h1
 end

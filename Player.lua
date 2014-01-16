@@ -83,7 +83,12 @@ function Player:update(dt)
 	if (self.y < 0) then
 		self.y = 0
 	end
-
+	if (self.y + self.height > love.window.getHeight()) then
+		self.y = love.window.getHeight() - self.height
+	end
+	if (self.x + self.width > love.window.getWidth()) then
+		self.x = love.window.getWidth() - self.width
+	end
 end
 
 function Player:attack()		

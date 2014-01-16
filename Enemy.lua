@@ -38,34 +38,37 @@ function Enemy:think(playerx, playery)
 	distance = math.sqrt((self.x - playerx)^2 + (self.y - playery)^2)
 	if (distance <= self.sightRange) then
 		--act based on mood
-		if (mood == "Happy") then
+		if (self.mood == "Happy") then
 
-		elseif (mood == "Scared") then
+		elseif (self.mood == "Scared") then
 			--run away from player
-			if (playerx > self.x) then 
-				self:moveRight()
+			if (playerx < self.x) then 
+				self:moveRight() 
 			else
-				moveLeft()
-			end
-			if (playery > self.y) then
-				moveUp()
-			else
-				moveDown()
+				self:moveLeft()
 			end
 
-		elseif (mood == "Angry") then
+			if (playery > self.y) then
+				self:moveUp()
+			else
+				self:moveDown()
+			end
+
+		elseif (self.mood == "Angry") then
 			--move towards player menacingly
 			if (playerx < self.x) then 
-				moveRight()
+				self:moveRight()
 			else
-				moveLeft()
+				self:moveLeft()
 			end
 			if (playery < self.y) then
-				moveUp()
+				self:moveUp()
 			else
-				moveDown()
+				self:moveDown()
 			end
 		end
+	else
+		self:stop()
 	end
 end
 
@@ -86,6 +89,12 @@ function Enemy:update(dt)
 	end
 	if (self.y < 0) then
 		self.y = 0
+	end
+	if (self.y + self.height > love.window.getHeight()) then
+		self.y = love.window.getHeight() - self.height
+	end
+	if (self.x + self.width > love.window.getWidth()) then
+		self.x = love.window.getWidth() - self.width
 	end
 end
 
