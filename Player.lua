@@ -65,7 +65,8 @@ self.ySpeed = 0
 end
 --Actions
 function Player:update(dt)
-	
+	--add speed calculation based on inventory
+
 	if (self.cooldown > 0) then 
 		self.cooldown = self.cooldown - 1
 	end
@@ -129,4 +130,18 @@ if (self.cooldown < 1) then
 
 end
 	return attack
+end
+
+function Player:pickup()
+--if there is an item nearby, pick it up
+
+--add the item to inventory
+
+end
+
+function Player:drop()
+--toss an item from the inventory
+--return the item
+--remove from inventory
+
 end

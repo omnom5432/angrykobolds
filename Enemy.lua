@@ -37,9 +37,10 @@ end
 function Enemy:think(playerx, playery)
 	--rev up those pythagorean theorems
 	distance = math.sqrt((self.x - playerx)^2 + (self.y - playery)^2)
-	if (self.mood == "Happy") then
-		--do whatever it is that badguys do
+	if (self.mood == "Curious") then
+		--wander around and explore
 		if (self.changeDir < 1) then
+			self:stop()
 			self.changeDir = math.random(200)
 			direction = math.random(6)
 			if (direction <= 2) then
@@ -50,8 +51,6 @@ function Enemy:think(playerx, playery)
 				self:moveLeft()
 			elseif(direction <= 5) then
 				self:moveDown()
-			else
-				self:stop()
 			end
 		end
 		self.changeDir = self.changeDir - 1

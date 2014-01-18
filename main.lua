@@ -25,6 +25,7 @@ function love.load()
 		enemies[i].width = 20
 		enemies[i].height = 20
 		enemies[i].sightRange = 200
+		enemies[i].mood = "Curious"
 	end
 end
 
