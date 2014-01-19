@@ -22,6 +22,7 @@ function Player:new()
 	state = "",
 	cooldown = 0,
 	atkRange = 0,
+	inventory = {},
 	}
 	setmetatable(object, {__index = Player})
 	return object
@@ -132,16 +133,18 @@ end
 	return attack
 end
 
-function Player:pickup()
---if there is an item nearby, pick it up
+function Player:pickup(item)
 
---add the item to inventory
+	--add the item to inventory
+	table.insert(self.inventory, item)
 
 end
 
 function Player:drop()
---toss an item from the inventory
---return the item
---remove from inventory
-
+	--toss an item from the inventory
+	--return the item
+	--remove from inventory
+	item = self.inventory[1]
+	table.remove(self.inventory, 1)
+	return item
 end

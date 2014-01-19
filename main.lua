@@ -1,5 +1,6 @@
 require "Player"
 require "Enemy"
+require "Item"
 
 function love.load()
 	--make a new player object 
@@ -26,6 +27,12 @@ function love.load()
 		enemies[i].height = 20
 		enemies[i].sightRange = 200
 		enemies[i].mood = "Curious"
+	end
+
+	items = {}
+	for i = 1, 10 do
+		temp = Item:new()
+		items[i] = temp
 	end
 end
 
@@ -78,13 +85,24 @@ function love.update(dt)
 end
 
 function love.keyreleased(key)
+	--stop moving
 	if (key == "right") or (key == "left") or (key == "up") or (key == "down") then
 		p:stop()
 	end
+	--attack
 	if (key == "x") then
 		table.insert(attacks, p:attack())
 		p:stop()
 	end
+	--pickup
+	if (key == "c") then
+
+	end
+	--drop
+	if (key == "v") then
+		p:drop()
+	end
+	--quit
 	if key == "escape" then
 		love.event.quit()
 	end
