@@ -137,14 +137,19 @@ function Player:pickup(item)
 
 	--add the item to inventory
 	table.insert(self.inventory, item)
-
+	self.speed = self.speed * 0.9
 end
 
 function Player:drop()
 	--toss an item from the inventory
 	--return the item
 	--remove from inventory
-	item = self.inventory[1]
-	table.remove(self.inventory, 1)
-	return item
+	if (#self.inventory > 0) then
+		item = self.inventory[1]
+		item.x = self.x
+		item.y = self.y
+		table.remove(self.inventory, 1)
+		self.speed = self.speed / 0.9
+		return item
+	end
 end

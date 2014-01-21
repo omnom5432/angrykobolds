@@ -7,6 +7,7 @@ function love.load()
 	g = love.graphics
 	playerColor = {255, 0 , 128}
 	enemyColor = {0, 255, 128}
+	itemColor = {128, 0, 255}
 	p = Player:new()
 
 	p.x = 300
@@ -32,6 +33,8 @@ function love.load()
 	items = {}
 	for i = 1, 10 do
 		temp = Item:new()
+		temp.x = math.random(800)
+		temp.y = math.random(600)
 		items[i] = temp
 	end
 end
@@ -96,11 +99,20 @@ function love.keyreleased(key)
 	end
 	--pickup
 	if (key == "c") then
-
+		--check collision with items
+		for i,v in ipairs(items) do
+			if (CheckCollision(v.x, v.y, v.width, v.height, p.x, p.y, p.width, p.height)) then
+				p:pickup(v)
+				table.remove(items, i)
+			end
+		end
 	end
 	--drop
 	if (key == "v") then
-		p:drop()
+		temp = p:drop()
+		if (temp) then
+			table.insert(items, temp)
+		end
 	end
 	--quit
 	if key == "escape" then
@@ -120,6 +132,11 @@ function love.draw()
 	for i,v in ipairs(enemies) do
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
 		g.print(v.dir..v.mood, v.x, v.y-15)
+	end
+
+	g.setColor(itemColor)
+	for i,v in ipairs(items) do
+		g.rectangle("fill", v.x, v.y, v.width, v.height)
 	end
 		--draw the attack hitbox (debug only)
 	g.setColor(255,255,255,255)
