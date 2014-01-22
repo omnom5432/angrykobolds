@@ -94,18 +94,23 @@ function love.keyreleased(key)
 	end
 	--attack
 	if (key == "x") then
-		table.insert(attacks, p:attack())
-		p:stop()
-	end
-	--pickup
-	if (key == "c") then
-		--check collision with items
+				--check collision with items
+		temp = false
 		for i,v in ipairs(items) do
 			if (CheckCollision(v.x, v.y, v.width, v.height, p.x, p.y, p.width, p.height)) then
 				p:pickup(v)
 				table.remove(items, i)
+				temp = true
 			end
 		end
+		if (not temp) then
+			table.insert(attacks, p:attack())
+			p:stop()
+		end
+	end
+	--pickup
+	if (key == "c") then
+
 	end
 	--drop
 	if (key == "v") then

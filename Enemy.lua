@@ -33,7 +33,6 @@ function Enemy:new()
 end
 
 --acts based on how close the player is
---this can potentially be refactored into only being called when the player is close enough
 function Enemy:think(playerx, playery)
 	--rev up those pythagorean theorems
 	distance = math.sqrt((self.x - playerx)^2 + (self.y - playery)^2)
@@ -54,6 +53,7 @@ function Enemy:think(playerx, playery)
 			end
 		end
 		self.changeDir = self.changeDir - 1
+	-- these only get done if the enemy can see the player.
 	elseif (distance <= self.sightRange) then
 		--act based on mood
 
