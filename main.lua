@@ -5,6 +5,7 @@ require "Item"
 function love.load()
 	--make a new player object 
 	g = love.graphics
+	playerimg = g.newImage("kobold.png")
 	playerColor = {255, 0 , 128}
 	enemyColor = {0, 255, 128}
 	itemColor = {128, 0, 255}
@@ -126,13 +127,11 @@ function love.keyreleased(key)
 end
 
 function love.draw()
-	--draw the player at their location
+	--[[draw the player at their location
 	g.setColor(playerColor)
 	g.rectangle("fill", p.x, p.y, p.width, p.height)
-	g.print("Player State: "..p.state, 5, 20)
-	g.print("speed "..math.floor(p.xSpeed)..", "..math.floor(p.ySpeed))
-	g.print("cooldown"..p.cooldown, 100, 0)
-	
+	--]]
+
 	g.setColor(enemyColor)
 	for i,v in ipairs(enemies) do
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
@@ -148,6 +147,12 @@ function love.draw()
 	for i,v in ipairs(attacks) do
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
 	end
+
+	g.draw(playerimg, p.x, p.y)
+	g.print("Player State: "..p.state, 5, 20)
+	g.print("speed "..math.floor(p.xSpeed)..", "..math.floor(p.ySpeed))
+	g.print("cooldown"..p.cooldown, 100, 0)
+	
 end
 
 -- Collision detection function.
