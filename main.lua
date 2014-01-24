@@ -5,7 +5,7 @@ require "Item"
 function love.load()
 	--make a new player object 
 	g = love.graphics
-	playerimg = g.newImage("kobold.png")
+	playerImg = g.newImage("kobold_blue.png")
 	playerColor = {255, 0 , 128}
 	enemyColor = {0, 255, 128}
 	itemColor = {128, 0, 255}
@@ -13,6 +13,8 @@ function love.load()
 
 	p.x = 300
 	p.y = 300
+	p.width = playerImg:getWidth()
+	p.height = playerImg:getHeight()
 	p.speed = 80
 	p.cooldown = 0
 	p.atkRange = 15
@@ -148,7 +150,7 @@ function love.draw()
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
 	end
 
-	g.draw(playerimg, p.x, p.y)
+	g.draw(playerImg, p.x, p.y)
 	g.print("Player State: "..p.state, 5, 20)
 	g.print("speed "..math.floor(p.xSpeed)..", "..math.floor(p.ySpeed))
 	g.print("cooldown"..p.cooldown, 100, 0)
