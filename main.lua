@@ -1,6 +1,7 @@
 require "Player"
 require "Enemy"
 require "Item"
+require "Attack"
 require "AnAL"
 function love.load()
 	--make a new player object 
@@ -34,6 +35,7 @@ function love.load()
 		enemies[i].sightRange = 200
 		enemies[i].atkRange = 15
 		enemies[i].mood = "Curious"
+		enemies[i].id = i
 	end
 
 	items = {}
@@ -77,11 +79,14 @@ function love.update(dt)
 		--2 attacks hitting each other could be parrys?
 		for ii,vv in ipairs(enemies) do
 			if (CheckCollision(v.x, v.y, v.width, v.height, vv.x, vv.y, vv.width, vv.height)) then
-				table.remove(attacks, i)
-				vv.health = vv.health - 1
-				vv.mood = "Scared"
-				if (vv.health < 0) then
-					table.remove(enemies, ii)
+				if (v.owner ~= vv.id) then
+					--table.remove(attacks, i)
+					vv.health = vv.health - 1
+					vv.mood = "Scared"
+
+					if (vv.health < 0) then
+						table.remove(enemies, ii)
+					end
 				end
 			end
 		end
@@ -90,7 +95,7 @@ function love.update(dt)
 	--each enemy thinks
 	for i,v in ipairs(enemies) do
 
-		temp = v:think(p.x, p.y)
+		temp = v:think(p.x + p.width/2, p.y + p.height/2)
 		if (temp) then
 			--add attack
 			table.insert(attacks, temp)
@@ -154,19 +159,21 @@ function love.draw()
 	for i,v in ipairs(enemies) do
 		--g.rectangle("fill", v.x, v.y, v.width, v.height)
 		enemyAnim:draw(v.x, v.y)
-		g.print(v.dir..v.mood, v.x, v.y-15)
+
+		g.print(v.dir..v.id..v.mood, v.x, v.y-15)
 	end
 
 	g.setColor(itemColor)
 	for i,v in ipairs(items) do
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
 	end
-		--draw the attack hitbox (debug only)
+		---[[draw the attack hitbox (debug only)
 	g.setColor(255,255,255,255)
 	for i,v in ipairs(attacks) do
+		g.print(v.owner, v.x, v.y-15)
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
 	end
-
+	--]]
 	g.draw(playerImg, p.x, p.y)
 	g.print("Player State: "..p.state, 5, 20)
 	g.print("speed "..math.floor(p.xSpeed)..", "..math.floor(p.ySpeed))

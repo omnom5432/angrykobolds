@@ -11,6 +11,7 @@ Probably.
 function Player:new()
 
 	local object = {
+	id = 0,
 	x = 0,
 	y = 0,
 	xSpeed = 0,
@@ -96,7 +97,7 @@ end
 function Player:attack()		
 	--check if you can attack, then return an "attack" to the caller
 	--the attack should contain a direction, range, and length
-	attack = {}
+	attack = Attack:new()
 	attack.x = self.x + (self.width/2)
 	attack.y = self.y + (self.height/2)
 	attack.dir = "Up"
@@ -104,6 +105,7 @@ function Player:attack()
 	attack.length = 0
 	attack.width = self.width/2
 	attack.height = self.height/2
+	attack.owner = id
 	if (self.cooldown < 1) then
 		--prevents an attack from happening if the player has just attacked
 		self.cooldown = 25
@@ -146,8 +148,8 @@ function Player:drop()
 	--remove from inventory
 	if (#self.inventory > 0) then
 		item = self.inventory[1]
-		item.x = self.x
-		item.y = self.y
+		item.x = self.x + self.width / 2 
+		item.y = self.y + self.height
 		table.remove(self.inventory, 1)
 		self.speed = self.speed / 0.9
 		return item

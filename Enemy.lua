@@ -10,9 +10,10 @@ moods are for AI
 "Happy" will ignore players and do whatever it is bad guys do
 --]]
 --Constructor
-function Enemy:new()
+function Enemy:new(i)
 
 	local object = {
+		id = i,
 		x = 0,
 		y = 0,
 		xSpeed = 0,
@@ -164,7 +165,7 @@ end
 function Enemy:attack()
 --check if you can attack, then return an "attack" to the caller
 	--the attack should contain a direction, range, and length
-	attack = {}
+	attack = Attack:new()
 	attack.x = self.x + (self.width/2)
 	attack.y = self.y + (self.height/2)
 	attack.dir = "Up"
@@ -172,6 +173,7 @@ function Enemy:attack()
 	attack.length = 0
 	attack.width = self.width/2
 	attack.height = self.height/2
+	attack.owner = id
 	if (self.cooldown < 1) then
 		--prevents an attack from happening if the player has just attacked
 		self.cooldown = 25
