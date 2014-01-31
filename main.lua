@@ -1,11 +1,13 @@
 require "Player"
 require "Enemy"
 require "Item"
-
+require "AnAL"
 function love.load()
 	--make a new player object 
 	g = love.graphics
-	playerImg = g.newImage("kobold_blue.png")
+	playerImg = g.newImage("kobold.png")
+	enemyImg = g.newImage("Chicken.png")
+	enemyAnim = newAnimation(enemyImg, 22, 22, 0.1, 0)
 	playerColor = {255, 0 , 128}
 	enemyColor = {0, 255, 128}
 	itemColor = {128, 0, 255}
@@ -30,6 +32,7 @@ function love.load()
 		enemies[i].width = 20
 		enemies[i].height = 20
 		enemies[i].sightRange = 200
+		enemies[i].atkRange = 15
 		enemies[i].mood = "Curious"
 	end
 
@@ -40,6 +43,7 @@ function love.load()
 		temp.y = math.random(600)
 		items[i] = temp
 	end
+
 end
 
 function love.update(dt)
@@ -85,9 +89,16 @@ function love.update(dt)
 	end
 	--each enemy thinks
 	for i,v in ipairs(enemies) do
-		v:think(p.x, p.y)
+
+		temp = v:think(p.x, p.y)
+		if (temp) then
+			--add attack
+			table.insert(attacks, temp)
+		end
 		v:update(dt)
 	end
+
+	enemyAnim:update(dt)
 end
 
 function love.keyreleased(key)
@@ -104,6 +115,11 @@ function love.keyreleased(key)
 				p:pickup(v)
 				table.remove(items, i)
 				temp = true
+				--check if enemies can see you
+				--if yes, anger them.
+				for i,v in ipairs(enemies) do
+					v:aggro(p.x, p.y)
+				end
 			end
 		end
 		if (not temp) then
@@ -134,9 +150,10 @@ function love.draw()
 	g.rectangle("fill", p.x, p.y, p.width, p.height)
 	--]]
 
-	g.setColor(enemyColor)
+	--g.setColor(enemyColor)
 	for i,v in ipairs(enemies) do
-		g.rectangle("fill", v.x, v.y, v.width, v.height)
+		--g.rectangle("fill", v.x, v.y, v.width, v.height)
+		enemyAnim:draw(v.x, v.y)
 		g.print(v.dir..v.mood, v.x, v.y-15)
 	end
 

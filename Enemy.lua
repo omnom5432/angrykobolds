@@ -73,6 +73,10 @@ function Enemy:think(playerx, playery)
 
 		elseif (self.mood == "Angry") then
 			--move towards player menacingly
+			if (distance <= self.atkRange) then
+				return self:attack()
+			end
+
 			if (playerx > self.x) then 
 				self:moveRight()
 			else
@@ -83,6 +87,7 @@ function Enemy:think(playerx, playery)
 			else
 				self:moveDown()
 			end
+
 		end
 	else
 		self:stop()
@@ -115,6 +120,13 @@ function Enemy:update(dt)
 	end
 end
 
+function Enemy:aggro(px, py)
+		distance = math.sqrt((self.x - px)^2 + (self.y - py)^2)
+		if (distance <= self.sightRange) then
+			self.mood = "Angry"
+		end
+
+end
 --Movement
 function Enemy:moveUp()
 if (self.cooldown < 5) then
@@ -147,4 +159,45 @@ end
 function Enemy:stop()
 self.xSpeed = 0
 self.ySpeed = 0
+end
+
+function Enemy:attack()
+--check if you can attack, then return an "attack" to the caller
+	--the attack should contain a direction, range, and length
+	attack = {}
+	attack.x = self.x + (self.width/2)
+	attack.y = self.y + (self.height/2)
+	attack.dir = "Up"
+	attack.range = 0
+	attack.length = 0
+	attack.width = self.width/2
+	attack.height = self.height/2
+	if (self.cooldown < 1) then
+		--prevents an attack from happening if the player has just attacked
+		self.cooldown = 25
+		attack.dir = self.state
+		attack.range = self.atkRange
+		attack.length = self.cooldown
+		--switch based on state
+		if (attack.dir == "Up") then
+			attack.x = attack.x-(attack.width/2)
+			attack.height = attack.height + attack.range
+			attack.y = attack.y - attack.height
+		elseif (attack.dir == "Left") then
+			attack.y = attack.y - (attack.width/2)
+			attack.width = attack.width + attack.range
+			attack.x = attack.x - attack.width
+		elseif (attack.dir == "Down") then
+			attack.x = attack.x-(attack.width/2)
+			attack.height = attack.height + attack.range
+		elseif (attack.dir == "Right") then
+			attack.y = attack.y - (attack.width/2)
+			attack.width = attack.width + attack.range
+		end
+
+		--calculate the rectangle's x, y, width, height for the attack
+
+	end
+		return attack
+
 end
