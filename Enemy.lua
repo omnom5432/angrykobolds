@@ -173,7 +173,7 @@ function Enemy:attack()
 	attack.length = 0
 	attack.width = self.width/2
 	attack.height = self.height/2
-	attack.owner = id
+	attack.owner = self.id
 	if (self.cooldown < 1) then
 		--prevents an attack from happening if the player has just attacked
 		self.cooldown = 25

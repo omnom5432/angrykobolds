@@ -80,7 +80,7 @@ function love.update(dt)
 		for ii,vv in ipairs(enemies) do
 			if (CheckCollision(v.x, v.y, v.width, v.height, vv.x, vv.y, vv.width, vv.height)) then
 				if (v.owner ~= vv.id) then
-					--table.remove(attacks, i)
+					table.remove(attacks, i)
 					vv.health = vv.health - 1
 					vv.mood = "Scared"
 

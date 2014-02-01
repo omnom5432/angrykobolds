@@ -24,6 +24,7 @@ function Player:new()
 	cooldown = 0,
 	atkRange = 0,
 	inventory = {},
+	forces = {},	
 	}
 	setmetatable(object, {__index = Player})
 	return object
@@ -78,6 +79,15 @@ function Player:update(dt)
 		self.xSpeed = math.sqrt(self.speed * self.speed / 2) * (self.xSpeed / math.abs(self.xSpeed))
 		self.ySpeed = math.sqrt(self.speed * self.speed / 2) * (self.ySpeed / math.abs(self.ySpeed))
 	end
+	--applies forces to the player
+	for i,v in ipairs(self.forces) do
+		self.xSpeed = self.xSpeed + v.xComp
+		self.ySpeed = self.ySpeed + v.yComp
+		v.length = v.length - 1
+		if (v.length < 0) then
+			table.remove(self.forces, i)
+		end
+	end
 	self.x = self.x + (self.xSpeed * dt)
 	self.y = self.y + (self.ySpeed * dt)
 	if (self.x < 0) then
@@ -105,7 +115,7 @@ function Player:attack()
 	attack.length = 0
 	attack.width = self.width/2
 	attack.height = self.height/2
-	attack.owner = id
+	attack.owner = self.id
 	if (self.cooldown < 1) then
 		--prevents an attack from happening if the player has just attacked
 		self.cooldown = 25
