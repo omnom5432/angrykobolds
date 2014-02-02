@@ -28,6 +28,7 @@ function Enemy:new(i)
 		atkRange = 0,
 		sightRange = 0,
 		changeDir = 0,
+		forces = {},
 }
 	setmetatable(object, {__index = Enemy})
 	return object
@@ -104,6 +105,14 @@ function Enemy:update(dt)
 	if (self.xSpeed ~= 0) and (self.ySpeed ~= 0) then
 		self.xSpeed = math.sqrt(self.speed * self.speed / 2) * (self.xSpeed / math.abs(self.xSpeed))
 		self.ySpeed = math.sqrt(self.speed * self.speed / 2) * (self.ySpeed / math.abs(self.ySpeed))
+	end
+	for i,v in ipairs(self.forces) do
+		self.xSpeed = self.xSpeed + v.xComp
+		self.ySpeed = self.ySpeed + v.yComp
+		v:update()
+		if (v.length < 0) then
+			table.remove(self.forces, i)
+		end
 	end
 	self.x = self.x + (self.xSpeed * dt)
 	self.y = self.y + (self.ySpeed * dt)

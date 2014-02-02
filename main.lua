@@ -2,7 +2,9 @@ require "Player"
 require "Enemy"
 require "Item"
 require "Attack"
+require "Force"
 require "AnAL"
+
 function love.load()
 	--make a new player object 
 	g = love.graphics
@@ -80,17 +82,26 @@ function love.update(dt)
 		for ii,vv in ipairs(enemies) do
 			if (CheckCollision(v.x, v.y, v.width, v.height, vv.x, vv.y, vv.width, vv.height)) then
 				if (v.owner ~= vv.id) then
-					table.remove(attacks, i)
+					
 					vv.health = vv.health - 1
 					vv.mood = "Scared"
-
+					table.insert(vv.forces, v:getKnockback())
+					table.remove(attacks, i)
 					if (vv.health < 0) then
 						table.remove(enemies, ii)
 					end
 				end
 			end
 		end
+		if (CheckCollision(v.x, v.y, v.width, v.height, p.x, p.y, p.width, p.height)) then
+			if (v.owner ~= p.id) then
+				table.insert(p.forces, v:getKnockback())
+				
+				table.remove(attacks, i)
 
+			end
+
+		end
 	end
 	--each enemy thinks
 	for i,v in ipairs(enemies) do
@@ -160,7 +171,7 @@ function love.draw()
 		--g.rectangle("fill", v.x, v.y, v.width, v.height)
 		enemyAnim:draw(v.x, v.y)
 
-		g.print(v.dir..v.id..v.mood, v.x, v.y-15)
+		g.print(v.dir..v.cooldown..v.mood, v.x, v.y-15)
 	end
 
 	g.setColor(itemColor)

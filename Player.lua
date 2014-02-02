@@ -81,9 +81,9 @@ function Player:update(dt)
 	end
 	--applies forces to the player
 	for i,v in ipairs(self.forces) do
-		self.xSpeed = self.xSpeed + v.xComp
-		self.ySpeed = self.ySpeed + v.yComp
-		v.length = v.length - 1
+		self.xSpeed = self.xSpeed + v.xComp 
+		self.ySpeed = self.ySpeed + v.yComp 
+		v:update()
 		if (v.length < 0) then
 			table.remove(self.forces, i)
 		end
