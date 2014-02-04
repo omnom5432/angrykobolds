@@ -11,7 +11,7 @@ function Attack:new()
 		range = 0,
 		dir = "Up",
 		damage = 0,
-		knockback = 15,
+		knockback = 150,
 		owner = 0,
 }
 	setmetatable(object, {__index = Attack})
@@ -24,7 +24,7 @@ function Attack:getKnockback()
 	--return force
 	temp = Force:new()
 	dist = self.knockback
-	temp.length = 2;
+	temp.length = 5;
 			if (self.dir == "Up") then
 				temp.yComp = -dist
 		elseif (self.dir == "Left") then

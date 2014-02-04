@@ -81,7 +81,7 @@ function love.update(dt)
 		--2 attacks hitting each other could be parrys?
 		for ii,vv in ipairs(enemies) do
 			if (CheckCollision(v.x, v.y, v.width, v.height, vv.x, vv.y, vv.width, vv.height)) then
-				if (v.owner ~= vv.id) then
+				if (v.owner == 0) then
 					
 					vv.health = vv.health - 1
 					vv.mood = "Scared"
@@ -143,9 +143,9 @@ function love.keyreleased(key)
 			p:stop()
 		end
 	end
-	--pickup
+	--place trap
 	if (key == "c") then
-
+		p:setTrap()
 	end
 	--drop
 	if (key == "v") then

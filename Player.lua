@@ -81,11 +81,13 @@ function Player:update(dt)
 	end
 	--applies forces to the player
 	for i,v in ipairs(self.forces) do
-		self.xSpeed = self.xSpeed + v.xComp 
-		self.ySpeed = self.ySpeed + v.yComp 
+		self.xSpeed = v.xComp 
+		self.ySpeed = v.yComp 
 		v:update()
 		if (v.length < 0) then
 			table.remove(self.forces, i)
+			self.xSpeed = 0
+			self.ySpeed = 0
 		end
 	end
 	self.x = self.x + (self.xSpeed * dt)
@@ -143,6 +145,17 @@ function Player:attack()
 
 	end
 		return attack
+end
+
+--drop a trap on the ground
+function Player:setTrap()
+
+
+	if (self.cooldown < 1) then
+		self.cooldown = 50
+		--create trap
+	end
+	
 end
 
 function Player:pickup(item)

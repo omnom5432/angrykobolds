@@ -76,17 +76,19 @@ function Enemy:think(playerx, playery)
 		elseif (self.mood == "Angry") then
 			--move towards player menacingly
 			if (distance <= self.atkRange) then
-				return self:attack()
+				if (self.cooldown <= 0) then
+					return self:attack()
+				end
 			end
 
-			if (playerx > self.x) then 
+			if (self.x - playerx < -self.atkRange) then 
 				self:moveRight()
-			else
+			elseif (self.x - playerx > self.atkRange) then
 				self:moveLeft()
 			end
-			if (playery < self.y) then
+			if (self.y - playery > self.atkRange) then
 				self:moveUp()
-			else
+			elseif (self.y - playery < -self.atkRange) then
 				self:moveDown()
 			end
 
@@ -107,8 +109,8 @@ function Enemy:update(dt)
 		self.ySpeed = math.sqrt(self.speed * self.speed / 2) * (self.ySpeed / math.abs(self.ySpeed))
 	end
 	for i,v in ipairs(self.forces) do
-		self.xSpeed = self.xSpeed + v.xComp
-		self.ySpeed = self.ySpeed + v.yComp
+		self.xSpeed = v.xComp
+		self.ySpeed = v.yComp
 		v:update()
 		if (v.length < 0) then
 			table.remove(self.forces, i)
@@ -185,8 +187,8 @@ function Enemy:attack()
 	attack.owner = self.id
 	if (self.cooldown < 1) then
 		--prevents an attack from happening if the player has just attacked
-		self.cooldown = 25
-		attack.dir = self.state
+		self.cooldown = 50
+		attack.dir = self.dir
 		attack.range = self.atkRange
 		attack.length = self.cooldown
 		--switch based on state
