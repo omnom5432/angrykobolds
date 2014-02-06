@@ -69,7 +69,17 @@ function love.update(dt)
 	end
 
 	p:update(dt)
+		--each enemy thinks
+	for i,v in ipairs(enemies) do
 
+		temp = v:think(p.x + p.width/2, p.y + p.height/2)
+		if (temp) then
+			--add attack
+			table.insert(attacks, temp)
+		end
+		v:update(dt)
+	end
+	--resolve attacks
 	for i,v in ipairs(attacks) do
 		v.length = v.length - 1
 		if (v.length < 0) then
@@ -103,17 +113,8 @@ function love.update(dt)
 
 		end
 	end
-	--each enemy thinks
-	for i,v in ipairs(enemies) do
 
-		temp = v:think(p.x + p.width/2, p.y + p.height/2)
-		if (temp) then
-			--add attack
-			table.insert(attacks, temp)
-		end
-		v:update(dt)
-	end
-
+	--update animations
 	enemyAnim:update(dt)
 end
 

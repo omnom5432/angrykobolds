@@ -14,6 +14,8 @@ function Player:new()
 	id = 0,
 	x = 0,
 	y = 0,
+	edgeX = 0,
+	edgeY = 0,
 	xSpeed = 0,
 	ySpeed = 0,
 	width = 20,
@@ -104,6 +106,10 @@ function Player:update(dt)
 	if (self.x + self.width > love.window.getWidth()) then
 		self.x = love.window.getWidth() - self.width
 	end
+
+	--edgeX and Y represent the top corner, x and y represent the middle
+	self.edgeX = self.x - self.width/2
+	self.edgeY = self.x - self.height/2
 end
 
 function Player:attack()		
@@ -178,3 +184,8 @@ function Player:drop()
 		return item
 	end
 end
+
+--Check Collisions
+--[[Call this every time you move,
+	check against the list of collideable objects for collisions, if yes, stop moving.
+--]]
