@@ -18,7 +18,7 @@ function love.load()
 
 	p.x = 300
 	p.y = 300
-	p.width = playerImg:getWidth()
+	p.width = 40
 	p.height = playerImg:getHeight()
 	p.speed = 80
 	p.cooldown = 0
@@ -35,8 +35,8 @@ function love.load()
 		enemies[i].width = 20
 		enemies[i].height = 20
 		enemies[i].sightRange = 200
-		enemies[i].atkRange = 15
-		enemies[i].mood = "Curious"
+		enemies[i].atkRange = 30
+		--enemies[i].mood = "Curious"
 		enemies[i].id = i
 	end
 
@@ -68,7 +68,7 @@ function love.update(dt)
 		p:moveDown()
 	end
 
-	p:update(dt)
+	p:update(dt, enemies)
 		--each enemy thinks
 	for i,v in ipairs(enemies) do
 
@@ -77,7 +77,7 @@ function love.update(dt)
 			--add attack
 			table.insert(attacks, temp)
 		end
-		v:update(dt)
+		v:update(dt, p.x, p.y, p.width, p.height)
 	end
 	--resolve attacks
 	for i,v in ipairs(attacks) do
@@ -186,8 +186,9 @@ function love.draw()
 		g.rectangle("fill", v.x, v.y, v.width, v.height)
 	end
 	--]]
-	g.draw(playerImg, p.x, p.y)
-	g.print("Player State: "..p.state, 5, 20)
+	g.draw(playerImg, p.edgeX, p.edgeY)
+	g.rectangle("line", p.x, p.y, p.width, p.height)
+	g.print("Player State: "..p.dir, 5, 20)
 	g.print("speed "..math.floor(p.xSpeed)..", "..math.floor(p.ySpeed))
 	g.print("cooldown"..p.cooldown, 100, 0)
 	

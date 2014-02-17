@@ -98,7 +98,7 @@ function Enemy:think(playerx, playery)
 	end
 end
 
-function Enemy:update(dt)
+function Enemy:update(dt, px, py, pw, ph)
 	
 	if (self.cooldown > 0) then 
 		self.cooldown = self.cooldown - 1
@@ -118,6 +118,7 @@ function Enemy:update(dt)
 	end
 	self.x = self.x + (self.xSpeed * dt)
 	self.y = self.y + (self.ySpeed * dt)
+	self:ResolveCollision(px, py, pw, ph)
 	if (self.x < 0) then
 		self.x = 0
 	end
@@ -213,4 +214,29 @@ function Enemy:attack()
 	end
 		return attack
 
+end
+function Enemy:ResolveCollision(x1,y1,w1,h1)
+	if (CheckCollision(self.x, self.y, self.width, self.height, x1,y1,w1,h1)) then
+		--resolve collision
+		--move the player towards whichever side they are moving at
+		if (self.dir == "Up") then
+			self.y = y1 + h1
+		elseif (self.dir == "Left") then
+			self.x = x1 + w1
+		elseif (self.dir == "Down") then
+			self.y = y1 - self.height
+		elseif (self.dir == "Right") then
+			self.x = x1 - self.width
+		end
+	end
+end
+-- Collision detection function.
+-- Returns true if two boxes overlap, false if they don't
+-- x1,y1 are the left-top coords of the first box, while w1,h1 are its width and height
+-- x2,y2,w2 & h2 are the same, but for the second box
+function CheckCollision(x1,y1,w1,h1, x2,y2,w2,h2)
+	return x1 < x2+w2 and
+		x2 < x1+w1 and
+		y1 < y2+h2 and
+		y2 < y1+h1
 end
