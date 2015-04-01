@@ -37,50 +37,51 @@ end
 --Movement
 
 function Player:moveUp()
-if (self.cooldown < 5) then
-	self.ySpeed = -(self.speed)
-end
-if (self.xSpeed == 0) then
-	self.dir = "Up"
-end
+	if (self.cooldown < 5) then
+		self.ySpeed = -(self.speed)
+	end
+	if (self.xSpeed == 0) then
+		self.dir = "Up"
+	end
 end
 
 function Player:moveLeft()
-if (self.cooldown < 5) then
-	self.xSpeed = -(self.speed)
-end
-if (self.ySpeed == 0) then
-	self.dir = "Left"
-end
+	if (self.cooldown < 5) then
+		self.xSpeed = -(self.speed)
+	end
+	if (self.ySpeed == 0) then
+		self.dir = "Left"
+	end
 end
 
 function Player:moveDown()
-if (self.cooldown < 5) then
-	self.ySpeed = self.speed
-end
-if (self.xSpeed == 0) then
-	self.dir = "Down"
-end
+	if (self.cooldown < 5) then
+		self.ySpeed = self.speed
+	end
+	if (self.xSpeed == 0) then
+		self.dir = "Down"
+	end
 end
 
 function Player:moveRight()
-if (self.cooldown < 5) then
-	self.xSpeed = self.speed
-end
-if (self.ySpeed == 0) then
-	self.dir = "Right"
-end
+	if (self.cooldown < 5) then
+		self.xSpeed = self.speed
+	end
+	if (self.ySpeed == 0) then
+		self.dir = "Right"
+	end
 end
 
 function Player:stop()
-self.xSpeed = 0
-self.ySpeed = 0
+	self.xSpeed = 0
+	self.ySpeed = 0
 end
 
 --Actions
 function Player:update(dt, colliders)
 	--add speed calculation based on inventory
 
+	--cooldown is used for doing actions, so you can't spam attacks or anything
 	if (self.cooldown > 0) then 
 		self.cooldown = self.cooldown - 1
 	end
@@ -116,6 +117,7 @@ function Player:update(dt, colliders)
 	if (self.y < 0) then
 		self.y = 0
 	end
+	--keep the character inside the screen
 	if (self.y + self.height > love.window.getHeight()) then
 		self.y = love.window.getHeight() - self.height
 	end
@@ -242,6 +244,7 @@ function Player:findEdge(x1, y1, w1, h1)
 	end
 	return edge
 end
+
 -- Collision detection function.
 -- Returns true if two boxes overlap, false if they don't
 -- x1,y1 are the left-top coords of the first box, while w1,h1 are its width and height

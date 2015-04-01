@@ -215,20 +215,47 @@ function Enemy:attack()
 		return attack
 
 end
+
+--Resolve collision with rectangle (x1, y1, w1, h1)
 function Enemy:ResolveCollision(x1,y1,w1,h1)
 	if (CheckCollision(self.x, self.y, self.width, self.height, x1,y1,w1,h1)) then
 		--resolve collision
-		--move the player towards whichever side they are moving at
-		if (self.dir == "Up") then
+		--move the enemy towards whichever side is the closest
+		edge = self:findEdge(x1,y1,w1,h1)
+		if (edge == "Up") then	--bottom edge
 			self.y = y1 + h1
-		elseif (self.dir == "Left") then
+		elseif (edge == "Left") then	--right edge
 			self.x = x1 + w1
-		elseif (self.dir == "Down") then
+		elseif (edge == "Down") then	--top edge
 			self.y = y1 - self.height
-		elseif (self.dir == "Right") then
+		elseif (edge == "Right") then	--left edge
 			self.x = x1 - self.width
 		end
+
+
 	end
+end
+
+function Enemy:findEdge(x1, y1, w1, h1)
+	--overlap on each edge or 0 if no overlap
+	local edges = {x1 + w1 - self.x,
+	self.x + self.width - x1,
+	y1 + h1 - self.y,
+	self.y + self.height - y1}
+	edgeNames = {"Left","Right","Up", "Down"}
+	local lowest = nil
+	for i, v in ipairs(edges) do
+		if v > 0 and (lowest == nil or v < lowest) then
+			lowest = v
+		end
+	end
+	edge = "Up"
+	for i,v in ipairs(edgeNames) do
+		if (lowest == edges[i]) then
+			edge = v
+		end
+	end
+	return edge
 end
 -- Collision detection function.
 -- Returns true if two boxes overlap, false if they don't

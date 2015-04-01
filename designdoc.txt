@@ -1,0 +1,17 @@
+Kobolds Design Doc
+
+-- Feel --
+
+Frantic, panicky fast-paced gameplay
+Silly light atmosphere, cartoony violence
+
+-- Gameplay --
+
+	Stealing
+Steal items and hide them in a stash
+	Running Away
+Bad guys should be able to kill you most of the time
+	Traps
+Feeds into running away, you have to outwit the enemies so you don't die
+	Dying
+A necessary setback, respawning should be quick, and without a super hard punishment
